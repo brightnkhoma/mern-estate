@@ -1,4 +1,4 @@
-import React from 'react'
+import {Link} from 'react-router-dom'
 
 export default function SighUp() {
   return (
@@ -10,10 +10,16 @@ export default function SighUp() {
         <input type="password" placeholder='password' className='p-3 rounded-lg' id='password' />
         <button className='bg-slate-700 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-80'>sign up</button>
        </form>
-       <div className='flex gap-2 mt-5'>
+       
+         <div className='flex gap-2 mt-5'>
         <p>have an account?</p>
-        <span className='text-blue-700'>sign in</span>
+        <Link to={'/sign-in'}>
+          <span className='text-blue-700'>sign in</span>
+        </Link>
+        
        </div>
+       
+      
 
     </div>
    
