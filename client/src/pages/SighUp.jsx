@@ -30,12 +30,20 @@ export default function SighUp() {
       
       const data= await res.json();     
       setLoading(false);
-     console.log(data);
-     navigate('/sign-in');
+      console.log(data);
+      console.log('data');
+      if (data['success']===false){
+        setError(data['message'])
+        console.log('message');
+      }else{
+        navigate('/sign-in');
+      }
+     
     }
     catch(e){
       setLoading(false);
       setError(e.message);
+      console.log('error');
     }
   }
   
@@ -43,9 +51,9 @@ export default function SighUp() {
     <div className='p-3 max-w-lg mx-auto'>
        <h1 className='text-3xl text-center font-semibold my-7'>Sign up</h1>
        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type="text" placeholder='username' className='p-3 rounded-lg' id='username' onChange={handleChange}/>
-        <input type="email" placeholder='email' className='p-3 rounded-lg' id='email'onChange={handleChange}/>
-        <input type="password" placeholder='password' className='p-3 rounded-lg' id='password' onChange={handleChange}/>
+        <input type="text" placeholder='username' className='border p-3 rounded-lg' id='username' onChange={handleChange}/>
+        <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'onChange={handleChange}/>
+        <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
         <button disabled={loading} className='bg-slate-700 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-80'>{loading ? 'loading...' : 'sign up'}</button>
        </form>
        
@@ -57,7 +65,7 @@ export default function SighUp() {
         
        </div>  
        <div>
-        {error && <p className='text-red-500 mt-5'>{error}</p>}        
+        {error && <p className='text-red-500 mt-5'>{error}</p>} 
         </div>       
 
     </div>
