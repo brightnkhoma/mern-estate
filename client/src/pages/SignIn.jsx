@@ -1,7 +1,11 @@
 import { useState,  } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
+import { signInStart,signInSuccess, signInFailure } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SignIn() {
+  const dispatch = useDispatch();
+  const state = useSelector(state=>state.user)
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] =useState(false);
@@ -17,8 +21,9 @@ export default function SignIn() {
     try{
       
       e.preventDefault();
-      setLoading(true);
-      setError(null)
+      dispatch(signInStart())
+      //dispatch(signInFailure());
+      //setError(null)
       
       const res= await fetch('/api/auth/signin',{
         method : 'POST',
@@ -29,21 +34,19 @@ export default function SignIn() {
       });
       
       const data= await res.json();     
-      setLoading(false);
+      //setLoading(false);
       console.log(data);
       console.log('data');
       if (data['success']===false){
-        setError(data['message'])
-        console.log('message');
+        dispatch(signInFailure(data['message']));       
       }else{
+        dispatch(signInSuccess(data))
         navigate('/');
       }
      
     }
     catch(e){
-      setLoading(false);
-      setError(e.message);
-      console.log('error');
+      dispatch(signInFailure(e.message));
     }
   }
   
@@ -53,7 +56,7 @@ export default function SignIn() {
        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>        
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'onChange={handleChange}/>
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
-        <button disabled={loading} className='bg-slate-700 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-80'>{loading ? 'loading...' : 'sign in'}</button>
+        <button disabled={state.loading} className='bg-slate-700 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-80'>{state.loading ? 'loading...' : 'sign in'}</button>
        </form>
        
          <div className='flex gap-2 mt-5'>
@@ -64,7 +67,7 @@ export default function SignIn() {
         
        </div>  
        <div>
-        {error && <p className='text-red-500 mt-5'>{error}</p>} 
+        {state.error && <p className='text-red-500 mt-5'>{state.error}</p>} 
         </div>       
 
     </div>
