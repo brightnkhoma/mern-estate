@@ -2,13 +2,12 @@ import { useState,  } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import { signInStart,signInSuccess, signInFailure } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OAuth from '../components/OAuth';
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const state = useSelector(state=>state.user)
-  const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] =useState(false);
+  const [formData, setFormData] = useState({});  
   const navigate= useNavigate();
   const handleChange= (e)=>{
     setFormData({
@@ -21,9 +20,7 @@ export default function SignIn() {
     try{
       
       e.preventDefault();
-      dispatch(signInStart())
-      //dispatch(signInFailure());
-      //setError(null)
+      dispatch(signInStart())    
       
       const res= await fetch('/api/auth/signin',{
         method : 'POST',
@@ -33,10 +30,10 @@ export default function SignIn() {
         body: JSON.stringify(formData)
       });
       
-      const data= await res.json();     
-      //setLoading(false);
+      const data= await res.json();    
+
       console.log(data);
-      console.log('data');
+      
       if (data['success']===false){
         dispatch(signInFailure(data['message']));       
       }else{
@@ -57,9 +54,11 @@ export default function SignIn() {
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'onChange={handleChange}/>
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
         <button disabled={state.loading} className='bg-slate-700 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-80'>{state.loading ? 'loading...' : 'sign in'}</button>
+        <OAuth/>
        </form>
        
          <div className='flex gap-2 mt-5'>
+          
         <p>Dont have an account?</p>
         <Link to={'/sign-up'}>
           <span className='text-blue-700'>sign up</span>

@@ -1,5 +1,6 @@
 import { useState,  } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
+import OAuth from '../components/OAuth';
 
 export default function SighUp() {
   const [formData, setFormData] = useState({});
@@ -55,7 +56,9 @@ export default function SighUp() {
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email'onChange={handleChange}/>
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}/>
         <button disabled={loading} className='bg-slate-700 p-3 rounded-lg uppercase text-white hover:opacity-90 disabled:opacity-80'>{loading ? 'loading...' : 'sign up'}</button>
+         <OAuth/>
        </form>
+      
        
          <div className='flex gap-2 mt-5'>
         <p>have an account?</p>
