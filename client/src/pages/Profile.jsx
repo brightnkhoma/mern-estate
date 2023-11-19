@@ -112,6 +112,22 @@ export default function Profile() {
       console.log(error.message);    
     }
   }
+  const handleSignOut =async ()=>{
+    try {
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        console.log('Failed to sign out');
+        return;
+      }
+      //this slice method will still work here because it will set the current user to null
+      dispatch(deleteUserSuccess())
+      
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  }
 
   return (
     <div className="max-w-lg mx-auto">
@@ -133,7 +149,7 @@ export default function Profile() {
       </form>
       <div className="flex justify-between mt-5">
         <ComfirmDelete toDelete={handleDelete}/>
-        <span className="text-red-700 cursor-pointer">sign out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">sign out</span>
       </div>
           <p className="mt-4">{error ?  (<span className="text-red-600">{error+'!'} </span>) : Success && <span className="text-green-600">Profile updated successifully</span>}</p>
     </div>
