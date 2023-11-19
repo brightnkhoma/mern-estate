@@ -3,13 +3,13 @@ import { useRef } from "react"
 import { useState, useEffect } from "react"
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from "../firebase"
-import { updateStart, updateFailure, updateSuccess } from "../redux/user/userSlice"
-
+import { updateStart, updateFailure, updateSuccess, deleteUserStart, deleteUserSuccess, deleteUserFailure, setDenyDelete } from "../redux/user/userSlice"
+import { ComfirmDelete } from "../components/comfirmDelete"
 
 export default function Profile() {
   const dispatch = useDispatch();
   const currentUser = useSelector(state=>state.user.currentUser)
-  const {loading, error} = useSelector(state=>state.user)
+  const {loading, error, deleting} = useSelector(state=>state.user)
 
   const image =currentUser.avatar
   const fileRef = useRef(null)
@@ -60,6 +60,7 @@ export default function Profile() {
       //alert(currentUser.currentUser._id)
       
       dispatch(updateStart())
+      dispatch(setDenyDelete());
       const res = await fetch(`/api/auth/update/${currentUser._id}`,{        
         method : "POST",
         headers : {
@@ -85,12 +86,32 @@ export default function Profile() {
       setUpdateSuccess(true);
       
       
-    } catch (error) {
-      //console.log(data);
+    } catch (error) {     
       console.log(error);      
       dispatch(updateFailure(error.message));
     }
   };
+
+  const handleDelete =async ()=>{
+    try {
+      dispatch(deleteUserStart());
+      
+
+
+      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
+        method : 'DELETE'
+      })
+      const data = await res.json();
+      if (data.success === false){
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess());
+      
+    } catch (error) {
+      console.log(error.message);    
+    }
+  }
 
   return (
     <div className="max-w-lg mx-auto">
@@ -111,7 +132,7 @@ export default function Profile() {
         <button disabled={loading} className="bg-slate-700 rounded-lg text-white p-3 uppercase hover:opacity-95 disabled:opacity-80" >{loading ? 'updating...' : 'update' }</button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">delete account</span>
+        <ComfirmDelete toDelete={handleDelete}/>
         <span className="text-red-700 cursor-pointer">sign out</span>
       </div>
           <p className="mt-4">{error ?  (<span className="text-red-600">{error+'!'} </span>) : Success && <span className="text-green-600">Profile updated successifully</span>}</p>

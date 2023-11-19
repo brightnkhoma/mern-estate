@@ -18,7 +18,7 @@ app.listen(3001,()=>{
     console.log('server is running on port 3001!')
 })
 
-//app.use('/api/user', userRouter)
+app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 
 app.use((err,req, res,next)=>{
