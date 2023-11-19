@@ -5,6 +5,6 @@ import { veryfyToken } from '../utils/verifyUser.js';
 const router=express.Router();
 
 router.get('/test', test);
-router.post('/update:id', veryfyToken, updateUser)
+//router.post('/update/:id', veryfyToken, updateUser)
 
 export default router; 

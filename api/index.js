@@ -12,14 +12,13 @@ mongoose.connect(process.env.MONGO).then(()=>{
     console.log(err);
 })
 const app = express();
+app.use(cookieParser())
 app.use(express.json());
-app.use(cookieParser)
-
-app.listen(3000,()=>{
-    console.log('server is running on port 3000!')
+app.listen(3001,()=>{
+    console.log('server is running on port 3001!')
 })
 
-app.use('/api/user', userRouter)
+//app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 
 app.use((err,req, res,next)=>{
