@@ -5,6 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from "../firebase"
 import { updateStart, updateFailure, updateSuccess, deleteUserStart, deleteUserSuccess, deleteUserFailure, setDenyDelete } from "../redux/user/userSlice"
 import { ComfirmDelete } from "../components/comfirmDelete"
+import { Link } from 'react-router-dom'
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -146,6 +147,9 @@ export default function Profile() {
         <input id='email' type="email" placeholder="email" defaultValue={currentUser.email} className="p-3 rounded-lg border " onChange={(e)=>handleChange(e)}/>
         <input id ='password' type="text" placeholder="password" className="p-3 rounded-lg border " onChange={(e)=>handleChange(e)}/>
         <button disabled={loading} className="bg-slate-700 rounded-lg text-white p-3 uppercase hover:opacity-95 disabled:opacity-80" >{loading ? 'updating...' : 'update' }</button>
+        <Link className="bg-green-700 p-3 rounded-lg text-white uppercase text-center hover:opacity-95" to={"/create-listing"}>
+          create listing
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <ComfirmDelete toDelete={handleDelete}/>
