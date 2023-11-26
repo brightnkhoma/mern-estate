@@ -155,7 +155,7 @@ export default function Profile() {
         <ComfirmDelete toDelete={handleDelete}/>
         <span onClick={handleSignOut} className="text-red-700 cursor-pointer">sign out</span>
       </div>
-          <p className="mt-4">{error ?  (<span className="text-red-600">{error+'!'} </span>) : Success && <span className="text-green-600">Profile updated successifully</span>}</p>
+          <p className="mt-4">{error ?  (<span className="text-red-600 text-sm">{error+'!'} </span>) : Success && <span className="text-green-600">Profile updated successifully</span>}</p>
     </div>
   )
 }

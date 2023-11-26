@@ -8,7 +8,7 @@ export const ComfirmDelete = ({toDelete})=>{
 
     return(
         <span>
-            {comfirmDelete ? <span className="text-red-500">Be carefull! 
+            {comfirmDelete ? <span className="text-red-500 text-sm">Be carefull! 
             Your account will be deleted permanently <br />
             <div className="mt-3 flex gap-7">
             <button className="border py-2 px-3  bg-red-700 text-white  uppercase" onClick={toDelete}>comfirm</button>
